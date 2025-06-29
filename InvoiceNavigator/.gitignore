@@ -1,0 +1,12 @@
+# Node.js
+node_modules/
+.env
+api.http
+
+# Logs
+logs
+*.log
+
+# Sistema
+.DS_Store
+Thumbs.db

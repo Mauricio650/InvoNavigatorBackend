@@ -1,0 +1,40 @@
+{
+  "name": "invoices-to-purchasing",
+  "version": "1.0.0",
+  "description": "Project to improve efficiency in the process of accepting, rejecting and sending invoices to the purchasing area from the billing department of a company.",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "type": "module",
+  "keywords": [
+    "invoices",
+    "suppliers"
+  ],
+  "author": "Mauricio Ibañez Bermudez",
+  "license": "ISC",
+  "eslintConfig": {
+    "extends": "standard"
+  },
+  "devDependencies": {
+    "nodemon": "3.1.4",
+    "standard": "17.1.2"
+  },
+  "dependencies": {
+    "axios": "1.8.4",
+    "bcrypt": "5.1.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "2.8.5",
+    "dotenv": "16.5.0",
+    "ejs": "3.1.10",
+    "express": "5.1.0",
+    "gridfs-stream": "1.1.1",
+    "jsonwebtoken": "9.0.2",
+    "luxon": "3.6.1",
+    "mongodb": "5.9.1",
+    "mongoose": "6.13.8",
+    "multer": "1.4.4",
+    "multer-gridfs-storage": "5.0.2",
+    "zod": "3.23.8"
+  }
+}
