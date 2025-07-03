@@ -14,7 +14,7 @@ export class ControllerUser {
     const result = validateSchemaUser(req.body)
 
     if (!result.success) {
-      const errors = {}
+      const errors = { error: true }
       result.error.issues.forEach(e => {
         errors.path = e.path
         errors.message = e.message
@@ -35,7 +35,15 @@ export class ControllerUser {
   login = async (req, res) => {
     const result = validatePartialUser(req.body)
 
-    if (!result.success) { return res.status(400).json({ error: result.error.errors }) }
+    if (!result.success) {
+      const errors = { error: true }
+      result.error.issues.forEach(e => {
+        errors.path = e.path
+        errors.message = e.message
+        return errors
+      })
+      return res.status(400).json(errors)
+    }
 
     try {
       const user = await this.modelUser.login({ input: result.data })

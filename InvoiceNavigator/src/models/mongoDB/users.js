@@ -29,7 +29,7 @@ export class ModelUser {
     if (!resultPassword) {
       throw new Error('User or password is wrong')
     }
-    const { _id, username, role } = verifyUsername
-    return { _id, username, role }
+    const { _id, username, role, fullName } = verifyUsername
+    return { _id, username, role, fullName }
   }
 }
