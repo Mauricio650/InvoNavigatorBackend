@@ -77,7 +77,7 @@ export class ControllerUser {
   logout = async (req, res) => {
     res.clearCookie('access_token')
     res.clearCookie('refresh_token')
-    res.status(200).json({ logout: 'successful' })
+    res.status(200).json({ logout: true })
   }
 
   verifyToken = async (req, res) => {
