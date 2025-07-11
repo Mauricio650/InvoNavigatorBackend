@@ -52,6 +52,8 @@ export class InvoiceController {
   }
 
   updateInvoice = async (req, res) => {
+    const data = req.session.user
+    if (!data || data.role !== 'admin') { return res.status(401).json({ error: 'access not authorized' }) }
     const { id } = req.params
     if (!id) { return res.status(400).json({ error: 'insert a valid query (id)' }) }
     const result = validatePartialInvoice(req.body, schemaInvoice)
@@ -66,6 +68,8 @@ export class InvoiceController {
   }
 
   validatedUpdateId = async (req, res) => {
+    const data = req.session.user
+    if (!data || data.role !== 'admin') { return res.status(401).json({ error: 'access not authorized' }) }
     const { id } = req.body
     if (!id) { return res.status(400).json({ error: 'not id' }) }
 
@@ -78,6 +82,8 @@ export class InvoiceController {
   }
 
   deleteInvoice = async (req, res) => {
+    const data = req.session.user
+    if (!data || data.role !== 'admin') { return res.status(401).json({ error: 'access not authorized' }) }
     const { id } = req.params
     if (!id) { return res.status(400).json({ error: 'ID is needed' }) }
 
