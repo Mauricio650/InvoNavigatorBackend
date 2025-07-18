@@ -1,4 +1,4 @@
-import { validateInvoice, validatePartialInvoice, schemaInvoice } from '../schemas/invoices.js'
+import { validateInvoice, validatePartialInvoice, schemaInvoice, schemaFindInvoice } from '../schemas/invoices.js'
 import { DateTime } from 'luxon'
 
 export class InvoiceController {
@@ -46,6 +46,33 @@ export class InvoiceController {
       /* ALL INVOICES IN ACTUAL MONTH */
       const result = await this.ModelInvoice.getAllInvoices({ from, end })
       return res.status(200).json(result)
+    } catch (error) {
+      res.status(500).json({ message: `Error: ${error.message}` })
+    }
+  }
+
+  getFilterInvoices = async (req, res) => {
+    const data = req.session.user
+    if (!data) { return res.status(401).json({ error: 'access not authorized' }) }
+    const result = validatePartialInvoice(req.body, schemaFindInvoice)
+    if (!result.success) { return res.status(400).json({ error: 'not valid params', information: result.error }) }
+
+    const { from, to } = req.body
+    const newDateFrom = DateTime.fromSQL(from).setZone('America/Bogota')
+    const newDateTo = to ? DateTime.fromSQL(to).endOf('day').setZone('America/Bogota') : newDateFrom.endOf('day')
+
+    const dataFilters = {
+      ...req.body,
+      uploadAt: { $gte: newDateFrom.toJSDate(), $lte: newDateTo.toJSDate() },
+      username: data.username
+    }
+    /* keys 'from' and 'to' are not needed because uploadAt is the columns name in mongo db */
+    delete dataFilters.from
+    delete dataFilters.to
+
+    try {
+      const jsonResponse = await this.ModelInvoice.getFilterInvoices(dataFilters)
+      return res.status(200).json({ invoices: jsonResponse })
     } catch (error) {
       res.status(500).json({ message: `Error: ${error.message}` })
     }
@@ -111,9 +138,9 @@ export class InvoiceController {
 
   chStatus = async (req, res) => {
     const data = req.session.user
-    if (!data) { return res.status(401).json({ error: 'access not authorized' }) }
+    if (!data) return res.status(401).json({ error: 'access not authorized' })
 
-    if (!req.params.id) { return res.status(404).json({ error: 'please check the id' }) }
+    if (!req.params.id) return res.status(404).json({ error: 'please check the id' })
     const invoiceId = req.params.id
 
     const action = req.body.action
@@ -122,17 +149,17 @@ export class InvoiceController {
     if (!boolean) {
       try {
         const status = await this.ModelInvoice.changeStatus({ invoiceId, boolean })
-        return status
+        res.status(200).json(status)
       } catch (error) {
         res.status(500).json({ message: `Error: ${error.message}` })
       }
-    }
-
-    try {
-      const status = await this.ModelInvoice.changeStatus({ invoiceId, boolean })
-      return status
-    } catch (error) {
-      res.status(500).json({ message: `Error: ${error.message}` })
+    } else {
+      try {
+        const status = await this.ModelInvoice.changeStatus({ invoiceId, boolean })
+        res.status(200).json(status)
+      } catch (error) {
+        res.status(500).json({ message: `Error: ${error.message}` })
+      }
     }
   }
 

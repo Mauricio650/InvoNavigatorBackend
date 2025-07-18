@@ -9,6 +9,7 @@ export const createInvoiceRouter = ({ modelInvoice }) => {
   invoiceRouter.post('/upload', upload.single('myfile'), controllerInvoice.uploadInvoice)
 
   invoiceRouter.get('/home/invoices', controllerInvoice.getInvoices)
+  invoiceRouter.post('/home/filterInvoices', controllerInvoice.getFilterInvoices)
 
   invoiceRouter.patch('/home/invoices/update/:id', upload.single('myfile'), controllerInvoice.updateInvoice)
   invoiceRouter.patch('/home/updateStatus/:id', controllerInvoice.chStatus)

@@ -36,6 +36,15 @@ export class InvoiceModel {
     }
   }
 
+  static async getFilterInvoices (data) {
+    try {
+      const invoices = await Invoice.find(data)
+      return invoices
+    } catch (error) {
+      throw new Error('Server error getting invoices', error)
+    }
+  }
+
   // Admin Mood (INVOICES PER MONTH) ==>
   static async getAllInvoices ({ from, end }) {
     try {
