@@ -60,7 +60,6 @@ export class InvoiceController {
     const { from, to } = req.body
     const newDateFrom = DateTime.fromSQL(from).setZone('America/Bogota')
     const newDateTo = to ? DateTime.fromSQL(to).endOf('day').setZone('America/Bogota') : newDateFrom.endOf('day')
-
     const dataFilters = {
       ...req.body,
       uploadAt: { $gte: newDateFrom.toJSDate(), $lte: newDateTo.toJSDate() },

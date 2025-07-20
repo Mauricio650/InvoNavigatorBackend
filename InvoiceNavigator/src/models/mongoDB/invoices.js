@@ -48,8 +48,7 @@ export class InvoiceModel {
   // Admin Mood (INVOICES PER MONTH) ==>
   static async getAllInvoices ({ from, end }) {
     try {
-      const invoices = await Invoice.find()
-      /* { uploadAt: { $gte: from.toJSDate(), $lte: end.toJSDate() } } */
+      const invoices = await Invoice.find({ uploadAt: { $gte: from.toJSDate(), $lte: end.toJSDate() } })
       return invoices
     } catch (error) {
       throw new Error('Server error getting invoices', error)
@@ -134,7 +133,7 @@ export class InvoiceModel {
 
     try {
       await Invoice.findByIdAndUpdate(invoiceId, { message })
-      return { message: 'successfully' }
+      return { message: 'Create note successfully' }
     } catch (error) {
       throw new Error('internal server error')
     }
@@ -146,6 +145,7 @@ export class InvoiceModel {
       if (result.message !== 'empty') {
         throw new Error('the invoice already has a message')
       }
+      return { message: false }
     } catch (error) {
       throw new Error('internal server error')
     }
