@@ -133,7 +133,7 @@ export class InvoiceModel {
 
     try {
       await Invoice.findByIdAndUpdate(invoiceId, { message })
-      return { message: 'Create note successfully' }
+      return { message: 'Note created successfully', status: true }
     } catch (error) {
       throw new Error('internal server error')
     }
@@ -145,9 +145,12 @@ export class InvoiceModel {
       if (result.message !== 'empty') {
         throw new Error('the invoice already has a message')
       }
+      if (result.status !== 'rejected') {
+        throw new Error('Notes only are allowed for rejected invoices')
+      }
       return { message: false }
     } catch (error) {
-      throw new Error('internal server error')
+      throw new Error(error)
     }
   }
 }

@@ -174,14 +174,14 @@ export class InvoiceController {
     try {
       await this.ModelInvoice.checkMessage({ invoiceId })
     } catch (error) {
-      return res.status(400).json({ message: `Error: ${error.message}` })
+      return res.status(400).json(error.message)
     }
 
     try {
       const response = await this.ModelInvoice.invoiceMessage({ invoiceId, data: result.data })
       return res.status(200).json(response)
     } catch (error) {
-      return res.status(500).json({ message: `Error: ${error.message}` })
+      return res.status(500).json(error.message)
     }
   }
 }
