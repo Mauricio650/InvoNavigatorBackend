@@ -89,4 +89,30 @@ export class ControllerUser {
       return res.status(401).json({ TokenIsValid: false })
     }
   }
+
+  changePassword = async (req, res) => {
+    const token = req.cookies.access_token
+    const passwords = req.body
+
+    const data = jwt.verify(token, process.env.JWT_SECRET_KEY)
+    if (!data) return res.status(401).json({ error: 'access not authorized' })
+    const result = validatePartialUser({ password: passwords.passwordNEW })
+    if (!result.success) {
+      const errors = { error: true }
+      result.error.issues.forEach(e => {
+        errors.path = e.path
+        errors.message = e.message
+        return errors
+      })
+      return res.status(400).json({ error: errors })
+    }
+    try {
+      console.log(result.success)
+      const response = await this.modelUser.changePassword({ username: data.username, passwords })
+      console.log(response)
+      res.status(200).json(response)
+    } catch (error) {
+      res.status(404).json({ error: error.message })
+    }
+  }
 }

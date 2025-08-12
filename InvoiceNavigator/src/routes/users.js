@@ -9,6 +9,7 @@ export const createUserRouter = ({ modelUser }) => {
   userRouter.post('/login', userController.login)
   userRouter.post('/logout', userController.logout)
   userRouter.post('/verifyToken', userController.verifyToken)
+  userRouter.post('/changePassword', userController.changePassword)
 
   return userRouter
 }

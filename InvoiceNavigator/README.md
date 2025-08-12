@@ -56,13 +56,6 @@ This application streamlines the document management workflow by providing a use
 - **Multer & GridFS**: File storage
 - **Zod**: Schema validation
 
-### Frontend
-- **EJS**: Template engine
-- **Tailwind CSS**: Styling
-- **Chart.js**: Data visualization
-- **Tabulator**: Table management
-- **Notyf**: Notifications
-- **Axios**: HTTP client
 
 ## Installation
 
