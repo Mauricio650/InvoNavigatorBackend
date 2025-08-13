@@ -11,6 +11,7 @@ export class InvoiceController {
     if (!data || data.role !== 'admin') { return res.status(401).json({ error: 'access not authorized' }) }
     const fileId = req.file.id
     const result = validateInvoice(req.body, schemaInvoice)
+    if (!result.success) { return res.status(400).json({ error: 'not valid params', information: result.error }) }
 
     if (!req.file || !result) {
       return res.status(400).json({ error: 'Insert valid data', errors: result.error })
@@ -20,7 +21,7 @@ export class InvoiceController {
       const newInvoice = await this.ModelInvoice.newInvoice({ data: result.data, fileId })
       res.status(201).json({ Inserted: newInvoice, status: true })
     } catch (error) {
-      res.status(500).json({ message: `Error: ${error.message}` })
+      res.status(500).json({ error: `${error.message}` })
     }
   }
 
@@ -87,9 +88,9 @@ export class InvoiceController {
     const fileId = req.file?.id || false
     try {
       const invoice = await this.ModelInvoice.updateInvoice({ data: result.data, id, fileId })
-      return res.status(200).json({ updateInvoice: invoice })
+      return res.status(200).json({ status: true, updateInvoice: invoice })
     } catch (error) {
-      res.status(500).json({ message: `Error: ${error.message}` })
+      res.status(500).json({ error: `${error.message}` })
     }
   }
 
@@ -101,9 +102,9 @@ export class InvoiceController {
 
     try {
       const result = await this.ModelInvoice.validatedUpdateId({ id })
-      return res.status(200).json(result)
+      return res.status(200).json({ data: result })
     } catch (error) {
-      res.status(500).json({ message: `Error: ${error.message}` })
+      res.status(500).json({ error: `${error.message}` })
     }
   }
 

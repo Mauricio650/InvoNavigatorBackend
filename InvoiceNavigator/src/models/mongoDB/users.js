@@ -44,7 +44,7 @@ export class ModelUser {
     }
     const { _id } = verifyUsername
     const hashedPassword = await bcrypt.hash(passwords.passwordNEW, 10)
-    const updatePassword = await User.findByIdAndUpdate(_id, { $set: { password: hashedPassword } }, { new: true, runValidators: true })
+    await User.findByIdAndUpdate(_id, { $set: { password: hashedPassword } }, { new: true, runValidators: true })
     return { successfully: true }
   }
 }

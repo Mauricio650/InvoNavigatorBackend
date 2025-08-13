@@ -4,7 +4,7 @@ export const schemaInvoice = z.object({
   company: z.string().max(280),
   to: z.string().max(10),
   number: z.string().max(100),
-  status: z.enum(['pending', 'accepted', 'rejected']),
+  status: z.enum(['pending', 'accepted', 'rejected']).optional(),
   fileId: z.string().optional(),
   message: z.string().max(500).optional()
 })

@@ -66,7 +66,7 @@ export class ControllerUser {
       res.status(200).json({ ok: true, user: { user, token } })
     } catch (error) {
       if (error.message === 'User not exists' ||
-        error.message === 'User or password is wrong') {
+        error.message === 'password is wrong') {
         return res.status(404)
           .json({ error: 'User or password is wrong' })
       }

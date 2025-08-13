@@ -4,7 +4,6 @@ import { deleteFile, downloadFile } from '../../config/db.js'
 export class InvoiceModel {
   static async newInvoice ({ data, fileId }) {
     const { to, company, number } = data
-
     try {
       const check = await Invoice.findOne({ number, company })
       if (check) {
