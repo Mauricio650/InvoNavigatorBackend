@@ -35,7 +35,7 @@ export class InvoiceModel {
     }
   }
 
-  static async getFilterInvoices (data) {
+  static async getFilterInvoices ({ data }) {
     try {
       const invoices = await Invoice.find(data)
       return invoices
@@ -93,7 +93,7 @@ export class InvoiceModel {
     }
     try {
       const result = await Invoice.findByIdAndDelete({ _id: id })
-      return result
+      return { status: true }
     } catch (error) {
       throw new Error('error deleting invoice', error)
     }

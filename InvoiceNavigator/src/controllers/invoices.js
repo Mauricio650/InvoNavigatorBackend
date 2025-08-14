@@ -58,20 +58,21 @@ export class InvoiceController {
     const result = validatePartialInvoice(req.body, schemaFindInvoice)
     if (!result.success) { return res.status(400).json({ error: 'not valid params', information: result.error }) }
 
-    const { from, to } = req.body
+    const { from, toD } = req.body
     const newDateFrom = DateTime.fromSQL(from).setZone('America/Bogota')
-    const newDateTo = to ? DateTime.fromSQL(to).endOf('day').setZone('America/Bogota') : newDateFrom.endOf('day')
+    const newDateTo = toD ? DateTime.fromSQL(toD).endOf('day').setZone('America/Bogota') : newDateFrom.endOf('day')
     const dataFilters = {
       ...req.body,
       uploadAt: { $gte: newDateFrom.toJSDate(), $lte: newDateTo.toJSDate() },
-      username: data.username
+      to: data.username
     }
     /* keys 'from' and 'to' are not needed because uploadAt is the columns name in mongo db */
     delete dataFilters.from
-    delete dataFilters.to
+    delete dataFilters.toD
+    if (data.role === 'admin') delete dataFilters.to
 
     try {
-      const jsonResponse = await this.ModelInvoice.getFilterInvoices(dataFilters)
+      const jsonResponse = await this.ModelInvoice.getFilterInvoices({ data: dataFilters })
       return res.status(200).json({ invoices: jsonResponse })
     } catch (error) {
       res.status(500).json({ message: `Error: ${error.message}` })
@@ -118,7 +119,7 @@ export class InvoiceController {
       await this.ModelInvoice.deleteInvoice({ id })
       return res.status(200).json({ message: 'Invoices deleted successfully' })
     } catch (error) {
-      return res.status(500).json({ error: 'internal server error' })
+      return res.status(500).json({ error: 'check if the invoice was deleted or the ID is wrong' })
     }
   }
 
