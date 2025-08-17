@@ -15,17 +15,6 @@ export const db = mongoose.connect(url, {
 
 const dataBase = mongoose.connection
 
-// delete files
-/* export const deleteFile = async ({ fileId }) => {
-  try {
-    const bucket = new GridFSBucket(dataBase.db, { bucketName: 'invoices' })
-    const id = mongoose.Types.ObjectId(fileId)
-    await bucket.delete(id)
-  } catch (error) {
-    console.log('Error deleting invoice', error)
-  }
-} */
-
 export const deleteFile = async ({ fileId }) => {
   try {
     const bucket = new GridFSBucket(dataBase.db, { bucketName: 'invoices' })

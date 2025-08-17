@@ -4,7 +4,7 @@
   "description": "Project to improve efficiency in the process of accepting, rejecting and sending invoices to the purchasing area from the billing department of a company.",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "node app.js"
   },
   "type": "module",
   "keywords": [
