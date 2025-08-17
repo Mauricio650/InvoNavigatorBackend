@@ -36,7 +36,8 @@ export const createApp = ({ modelUser, modelInvoice }) => {
           { expiresIn: '1h' })
         res.cookie('access_token', token, {
           httpOnly: true,
-          sameSite: 'strict'
+          sameSite: 'none',
+          secure: true
         })
         req.session.user = data
       } catch (error) {

@@ -55,12 +55,14 @@ export class ControllerUser {
 
       res.cookie('refresh_token', refreshToken, {
         httpOnly: true,
-        sameSite: 'strict'
+        sameSite: 'none',
+        secure: true
       })
 
       res.cookie('access_token', token, {
         httpOnly: true,
-        sameSite: 'strict'
+        sameSite: 'none',
+        secure: true
       })
 
       res.status(200).json({ ok: true, user: { user, token } })
