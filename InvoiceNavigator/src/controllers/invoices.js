@@ -32,8 +32,8 @@ export class InvoiceController {
     const end = DateTime.now().setZone('America/Bogota')
     const from = end.startOf('month')
 
-    // User Mood ==>
-    if (data.role !== 'admin') {
+    // User Mood ==> /* aca se comprueba si es role es admin pero lo tengo asi para la gente que pruebe mi proyecto */
+    if (data.username !== 'User4' && data.username !== 'Mau31') { /* este usuario es para la gente que quiera ver mi proyecto */
       try {
         /* ALL INVOICES IN ACTUAL MONTH FOR USER */
         const result = await this.ModelInvoice.getInvoices({ username: data.username, from, end })
@@ -45,7 +45,7 @@ export class InvoiceController {
     // Admin Mood ==>
     try {
       /* ALL INVOICES IN ACTUAL MONTH */
-      const result = await this.ModelInvoice.getAllInvoices({ from, end })
+      const result = await this.ModelInvoice.getAllInvoices()
       return res.status(200).json(result)
     } catch (error) {
       res.status(500).json({ message: `Error: ${error.message}` })

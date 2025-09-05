@@ -45,9 +45,9 @@ export class InvoiceModel {
   }
 
   // Admin Mood (INVOICES PER MONTH) ==>
-  static async getAllInvoices ({ from, end }) {
+  static async getAllInvoices () {
     try {
-      const invoices = await Invoice.find({ uploadAt: { $gte: from.toJSDate(), $lte: end.toJSDate() } })
+      const invoices = await Invoice.find()
       return invoices
     } catch (error) {
       throw new Error('Server error getting invoices', error)
