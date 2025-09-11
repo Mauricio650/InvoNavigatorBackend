@@ -16,6 +16,8 @@ export const createApp = ({ modelUser, modelInvoice }) => {
   app.use(cors(corsOptions))
   app.use(cookieParser())
 
+  app.get('/test', (req, res) => res.status(200).json({ message: 'all ok' }))
+
   app.use('/', createUserRouter({ modelUser }))
 
   app.use((req, res, next) => {

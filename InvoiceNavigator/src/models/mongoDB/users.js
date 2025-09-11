@@ -42,9 +42,27 @@ export class ModelUser {
     if (!resultPassword) {
       throw new Error('password is wrong')
     }
-    const { _id } = verifyUsername
-    const hashedPassword = await bcrypt.hash(passwords.passwordNEW, 10)
-    await User.findByIdAndUpdate(_id, { $set: { password: hashedPassword } }, { new: true, runValidators: true })
-    return { successfully: true }
+    try {
+      const { _id } = verifyUsername
+      const hashedPassword = await bcrypt.hash(passwords.passwordNEW, 10)
+      await User.findByIdAndUpdate(_id, { $set: { password: hashedPassword } }, { new: true, runValidators: true })
+      return { successfully: true }
+    } catch (error) {
+      throw new Error('Error while updating user')
+    }
+  }
+
+  static async deleteUserByUsername ({ username }) {
+    const verifyUsername = await User.findOne({ username })
+    if (!verifyUsername) {
+      throw new Error('User not exists')
+    }
+    try {
+      const { _id } = verifyUsername
+      await User.findByIdAndDelete(_id)
+      return { successfully: true }
+    } catch (error) {
+      throw new Error('Error while deleting user')
+    }
   }
 }

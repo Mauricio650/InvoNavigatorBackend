@@ -117,4 +117,29 @@ export class ControllerUser {
       res.status(404).json({ error: error.message })
     }
   }
+
+  deleteUserByUsername = async (req, res) => {
+    const token = req.cookies.access_token
+    const username = req.body
+    console.log(username)
+    const data = jwt.verify(token, process.env.JWT_SECRET_KEY)
+    if (!data || data.role !== 'admin') return res.status(401).json({ error: 'access not authorized' })
+
+    const result = validatePartialUser(username)
+    if (!result.success) {
+      const errors = { error: true }
+      result.error.issues.forEach(e => {
+        errors.path = e.path
+        errors.message = e.message
+        return errors
+      })
+      return res.status(400).json({ error: errors })
+    }
+    try {
+      const response = await this.modelUser.deleteUserByUsername({ username: result.data.username })
+      res.status(200).json(response)
+    } catch (error) {
+      res.status(500).json({ error: error.message })
+    }
+  }
 }

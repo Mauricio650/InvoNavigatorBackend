@@ -10,6 +10,7 @@ export const createUserRouter = ({ modelUser }) => {
   userRouter.post('/logout', userController.logout)
   userRouter.post('/verifyToken', userController.verifyToken)
   userRouter.post('/changePassword', userController.changePassword)
+  userRouter.delete('/deleteUser', userController.deleteUserByUsername)
 
   return userRouter
 }
