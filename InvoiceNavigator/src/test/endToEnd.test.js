@@ -2,6 +2,9 @@ import supertest from 'supertest'
 import { app } from '../../app'
 import { fileURLToPath } from 'url'
 import path from 'path'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -18,7 +21,7 @@ let fileIdInvoiceCreated
 beforeAll(async () => {
   /* We need to login for protected routes */
   const response = await api.post('/login')
-    .send({ username: 'Mau31', password: 'Uvabombom31' })
+    .send({ username: process.env.USER_TEST, password: process.env.PASSWORD_TEST })
     .expect(200)
     .expect('Content-Type', /application\/json/)
   tokenForRouteVerifyToken = response.body.user.token /* save string token for verifyToken route */
