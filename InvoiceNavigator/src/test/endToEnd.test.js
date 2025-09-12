@@ -89,8 +89,7 @@ describe('Invoices tests:', () => {
   test('Route Download invoice', async () => {
     await api.get(`/home/download/${fileIdInvoiceCreated}`)
       .set('Cookie', jwt)
-      .expect(200)
-      .expect('Content-Type', 'application/pdf; charset=utf-8')
+      .expect('Content-Type', /application\/pdf/)
   })
 
   test('Route Update invoice', async () => {

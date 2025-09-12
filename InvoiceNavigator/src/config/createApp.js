@@ -18,33 +18,22 @@ export const createApp = ({ modelUser, modelInvoice }) => {
 
   app.get('/test', (req, res) => res.status(200).json({ message: 'all ok' }))
 
-  app.use('/', createUserRouter({ modelUser }))
+  app.use('/', createUserRouter({ modelUser })) /* user routes */
 
-  app.use((req, res, next) => {
+  app.use('/', (req, res, next) => {
     const token = req.cookies.access_token
+    const refreshToken = req.cookies.refresh_token
     req.session = { user: null }
-
     try {
-      const data = jwt.verify(token, process.env.JWT_SECRET_KEY)
-      req.session.user = data
-    } catch (error) {
-      const refreshToken = req.cookies.refresh_token
-      if (!refreshToken) {
-        return res.status(401).json({ error: 'access not authorized' })
-      }
-      try {
-        const data = jwt.verify(refreshToken, process.env.JWT_SECRET_KEY)
-        const token = jwt.sign({ id: data.id, username: data.username, role: data.role }, process.env.JWT_SECRET_KEY,
-          { expiresIn: '1h' })
-        res.cookie('access_token', token, {
-          httpOnly: true,
-          sameSite: 'none',
-          secure: true
-        })
+      if (token) {
+        const data = jwt.verify(token, process.env.JWT_SECRET_KEY)
         req.session.user = data
-      } catch (error) {
-        return res.status(401).json({ error: 'access not authorized' })
+      } else if (refreshToken) {
+        const dataR = jwt.verify(refreshToken, process.env.JWT_SECRET_KEY)
+        req.session.user = dataR
       }
+    } catch (error) {
+      return res.status(401).json({ error: 'access not authorized' })
     }
 
     next()

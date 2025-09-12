@@ -131,7 +131,6 @@ export class InvoiceController {
       const file = await this.ModelInvoice.downloadInvoice({ fileId })
       res.setHeader('content-Type', 'application/pdf')
       file.pipe(res)
-      res.status(200).json({ message: 'invoice downloaded' })
     } catch (error) {
       res.status(500).json({ message: `Error: ${error.message}` })
     }
