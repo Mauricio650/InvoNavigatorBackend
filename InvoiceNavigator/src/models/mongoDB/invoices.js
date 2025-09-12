@@ -89,13 +89,13 @@ export class InvoiceModel {
       const { fileId } = result
       await deleteFile({ fileId })
     } catch (error) {
-      throw new Error('ID not found', error)
+      throw new Error(`ID not found: ${error.message}`)
     }
     try {
-      const result = await Invoice.findByIdAndDelete({ _id: id })
+      await Invoice.findByIdAndDelete({ _id: id })
       return { status: true }
     } catch (error) {
-      throw new Error('error deleting invoice', error)
+      throw new Error('error deleting invoice')
     }
   }
 

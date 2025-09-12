@@ -16,7 +16,6 @@ export class InvoiceController {
     if (!req.file || !result) {
       return res.status(400).json({ error: 'Insert valid data', errors: result.error })
     }
-
     try {
       const newInvoice = await this.ModelInvoice.newInvoice({ data: result.data, fileId })
       res.status(201).json({ Inserted: newInvoice, status: true })
@@ -58,7 +57,7 @@ export class InvoiceController {
     const result = validatePartialInvoice(req.body, schemaFindInvoice)
     if (!result.success) { return res.status(400).json({ error: 'not valid params', information: result.error }) }
 
-    const { from, toD } = req.body
+    const { from, toD } = req.body /* example from: '2025-08-01', toD: '2025-09-12' */
     const newDateFrom = DateTime.fromSQL(from).setZone('America/Bogota')
     const newDateTo = toD ? DateTime.fromSQL(toD).endOf('day').setZone('America/Bogota') : newDateFrom.endOf('day')
     const dataFilters = {
@@ -173,7 +172,7 @@ export class InvoiceController {
     const invoiceId = req.params.id
     const result = validatePartialInvoice(req.body, schemaInvoice)
     if (!result.success) { return res.status(400).json({ error: 'not valid params', information: result.error }) }
-
+    console.log(1)
     try {
       await this.ModelInvoice.checkMessage({ invoiceId })
     } catch (error) {
@@ -181,6 +180,7 @@ export class InvoiceController {
     }
 
     try {
+      console.log(0)
       const response = await this.ModelInvoice.invoiceMessage({ invoiceId, data: result.data })
       return res.status(200).json(response)
     } catch (error) {
