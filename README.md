@@ -25,18 +25,18 @@ it's a project created to improve invoices management in companies, providing fu
 - API REST
 - Modular architecture with model injection
 - MVC design pattern
-- CRUD for invoices and users
+- CRUD operations for invoices and users
 - Data validation with zod
 - User authentication with JWT
 - Role-based access control and route protection
 - Password encryption with bcrypt
-- File management with mongo and multer
+- File management with MongoDB and multer
 - Route testing with jest
 
 
 ## ⚙️ Installation and usage
 
-0. You need to have a mongo db in your pc and have a url of connection
+0. Make sure you have a MongoDB installed locally and a active MongoDB connection URL (e.g.,from mongo compass, from MongoDB Atlas).
 
 1. Clone the repository:
    ```
@@ -56,10 +56,11 @@ it's a project created to improve invoices management in companies, providing fu
     PORT=4000
    ```
 
-   to running tests you must a admin user
+   to running tests you must create a admin user from your db
    ```
-   USER_TEST='XXXX'
-   PASSWORD_TEST='XXXX'
+   
+   USER_TEST='admin user'
+   PASSWORD_TEST='admin password'
    ```
 
 4. Start the development server:
